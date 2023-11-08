@@ -10,6 +10,8 @@ to run:
 
 Personal Trainer is a Python application that will help you monitor and improve your workout performance
 
+
+
 ## Running Instructions
 
 ### Windows
@@ -33,6 +35,8 @@ To start the application, follow these steps:
 ### Linux
 
 Run bash start.sh
+
+
 
 ## Built With
 
