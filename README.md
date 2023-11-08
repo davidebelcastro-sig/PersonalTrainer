@@ -44,9 +44,9 @@ This section highlights the major frameworks and libraries used to build and enh
 ## Install the lib
 
 You can use the requirements.txt file to install packages with pip:
-
+``` 
 pip3 install -r requirements.txt
-
+```
 
 
 ## How It Works
