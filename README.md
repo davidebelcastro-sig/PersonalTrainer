@@ -37,7 +37,7 @@ Run bash start.sh
 
 ## Built With
 
-This section highlights the major frameworks and libraries used to build and enhance this project. Here are a few examples:
+This section highlights the major frameworks and libraries used to build and enhance this project.
 
 * [Tkinter](https://docs.python.org/3/library/tkinter.html)
 * [TensorFlow](https://www.tensorflow.org/)
@@ -47,6 +47,29 @@ This section highlights the major frameworks and libraries used to build and enh
 * [NumPy](https://numpy.org/)
 * [pickle (Python object serialization)](https://docs.python.org/3/library/pickle.html)
 * [zipfile (Python ZIP archive processing)](https://docs.python.org/3/library/zipfile.html)
+
+
+## How It Works
+
+Here's a visual overview of how to use the application:
+
+1. Launch the application by running `gui.py`.
+
+2. The main screen will appear, allowing you to select different workout categories and options.
+
+![Main screen](https://github.com/davidebelcastro-sig/PersonalTrainer/assets/73530772/2d116228-e29d-43ae-8c2b-827fbf883979)
+
+3. Click the workout category button to to select the video to monitor.
+
+![Video](https://github.com/davidebelcastro-sig/PersonalTrainer/assets/73530772/d292d9f9-f200-4cc5-b9b6-c36395e32c0e)
+
+4. After you watched the video, close it and wait for the response.
+
+![Response](https://github.com/davidebelcastro-sig/PersonalTrainer/assets/73530772/48b1123e-11a1-4be6-9b4a-14e5677242d5)
+
+5. Select "Ok" and then you'll come back to the main screen
+
+
 
 
 
