@@ -189,7 +189,7 @@ y = (root.winfo_screenheight() // 2) - (height // 2)
 root.geometry('{}x{}+{}+{}'.format(width, height, x, y))
 root.resizable(False, False)
 
-#root.iconbitmap("bolt-solid.ico")
+root.iconbitmap("sport_icon.ico")
 
 
 # Carica l'immagine da utilizzare come sfondo 
