@@ -42,6 +42,7 @@ Run bash start.sh
 
 This section highlights the major frameworks and libraries used to build and enhance this project. Here are a few examples:
 
+* [![Next][Next.js]][https://docs.python.org/3/library/tkinter.html]
 * [Tkinter](https://docs.python.org/3/library/tkinter.html)
 * [TensorFlow](https://www.tensorflow.org/)
 * [customtkinter](https://pypi.org/project/customtkinter/)
