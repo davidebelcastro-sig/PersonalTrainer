@@ -41,6 +41,13 @@ This section highlights the major frameworks and libraries used to build and enh
 * [pickle (Python object serialization)](https://docs.python.org/3/library/pickle.html)
 * [zipfile (Python ZIP archive processing)](https://docs.python.org/3/library/zipfile.html)
 
+## Install the lib
+
+You can use the requirements.txt file to install packages with pip:
+
+pip3 install -r requirements.txt
+
+
 
 ## How It Works
 
