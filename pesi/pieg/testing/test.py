@@ -4,6 +4,7 @@ import csv
 import numpy as np
 import os
 from pesi.pieg.testing import take_thresold
+import multiprocessing
 #import take_thresold solo su esecuzione singola senza gui
 
 def start(video_file):
@@ -75,7 +76,7 @@ def start(video_file):
             break     
 
 
-def esegui(video_file):
+def esegui(video_file, result):
     #leggo i parametri di thresold.txt(giusti)
     with open('pesi/pieg/bene/thresold.txt', 'r') as file:
         data = file.readlines()
@@ -99,6 +100,7 @@ def esegui(video_file):
         err_spalle = "no" #errore nella posizione della schiena
     else:
         err_spalle = "ok"
-    return err_gomiti, err_spalle
+    result.put((err_gomiti, err_spalle))
+
 
 
