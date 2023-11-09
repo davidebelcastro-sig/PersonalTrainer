@@ -6,6 +6,7 @@ import numpy as np
 import pickle
 
 
+
 with open('pesi/squat/schiena/sx/modello_cnn_schiena.pkl', 'rb') as file:
     model_schiena = pickle.load(file)
 
@@ -109,6 +110,7 @@ def esegui(path):
     risp_scende = prediction_scende(name1,model_scende)
     risp_schiena = prediction_schiena(name2,model_schiena)
     return risp_scende,risp_schiena
+
 
 
     

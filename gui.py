@@ -8,6 +8,7 @@ import corsa.testing.test as run
 import pesi.squat.check_sx as squat
 import pesi.pieg.testing.test as pieg
 from tkinter import messagebox
+import multiprocessing
 
 def show_popup(title,comment):
     messagebox.showinfo(title,comment)
@@ -25,6 +26,9 @@ def select_video_corsa():
     # Verifica se l'utente ha selezionato un video o ha annullato la finestra di dialogo
     if video_file:
         # Apre il video
+        result = multiprocessing.Queue()
+        process = multiprocessing.Process(target=run.esegui, args=(video_file,result,))
+        process.start()
         cap = cv2.VideoCapture(video_file)
         # Verifica se il video è stato aperto correttamente
         if not cap.isOpened():
@@ -52,7 +56,9 @@ def select_video_corsa():
             if key == ord('q') or cv2.getWindowProperty('Video', cv2.WND_PROP_VISIBLE) < 1:
                 break
 
-        gomiti,schiena,volto = run.esegui(video_file)
+        process.join()
+        risultati = result.get()
+        gomiti,schiena,volto = risultati
         show_popup("Giudizio Corsa", "Gomiti: " + gomiti + "\n"
                             "Schiena: " + schiena + "\n"
                             "Volto: " + volto)
@@ -67,6 +73,9 @@ def select_video_piegamenti():
     # Verifica se l'utente ha selezionato un video o ha annullato la finestra di dialogo
     if video_file:
         # Apre il video
+        result = multiprocessing.Queue()
+        process = multiprocessing.Process(target=pieg.esegui, args=(video_file,result,))
+        process.start()
         cap = cv2.VideoCapture(video_file)
         # Verifica se il video è stato aperto correttamente
         if not cap.isOpened():
@@ -93,7 +102,9 @@ def select_video_piegamenti():
             key = cv2.waitKey(25)
             if key == ord('q') or cv2.getWindowProperty('Video', cv2.WND_PROP_VISIBLE) < 1:
                 break
-        gomiti,spalle = pieg.esegui(video_file)
+        process.join()
+        risultati = result.get()
+        gomiti,spalle = risultati
         show_popup("Giudizio Piegamenti braccia", "Gomiti: " + gomiti + "\n"
                             "Braccia: " + spalle)
         cap.release()
@@ -133,7 +144,8 @@ def select_video_squat():
             key = cv2.waitKey(25)
             if key == ord('q') or cv2.getWindowProperty('Video', cv2.WND_PROP_VISIBLE) < 1:
                 break
-        scende, schiena = squat.esegui(video_file)
+
+        scende,schiena = squat.esegui(video_file)
         show_popup("Giudizio Squat", "Schiena: " + schiena + "\n"
                             "Scende: " + scende)
         cap.release()
@@ -189,7 +201,7 @@ y = (root.winfo_screenheight() // 2) - (height // 2)
 root.geometry('{}x{}+{}+{}'.format(width, height, x, y))
 root.resizable(False, False)
 
-root.iconbitmap("sport_icon.ico")
+#root.iconbitmap("sport_icon.ico")
 
 
 # Carica l'immagine da utilizzare come sfondo 
