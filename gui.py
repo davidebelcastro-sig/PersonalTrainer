@@ -7,6 +7,8 @@ import cv2
 import corsa.testing.test as run
 import pesi.squat.check_sx as squat
 import pesi.pieg.testing.test as pieg
+import pesi.trazioni.testing.test as traz
+import pesi.legpress.testing.test as leg
 from tkinter import messagebox
 import multiprocessing
 
@@ -151,12 +153,15 @@ def select_video_squat():
         cap.release()
         cv2.destroyAllWindows()
 
-def select_video_nuoto():
-    start="./nuoto/testing/"
+def select_video_trazioni():
+    start="./pesi/trazioni/video"
     # Apre una finestra di dialogo per selezionare un video
     video_file = filedialog.askopenfilename(initialdir=start,filetypes=[("Video files", "*.mp4 *.avi *.mkv *.mov *.MOV")])
     # Verifica se l'utente ha selezionato un video o ha annullato la finestra di dialogo
     if video_file:
+        result = multiprocessing.Queue()
+        process = multiprocessing.Process(target=traz.esegui, args=(video_file,result,))
+        process.start()
         # Apre il video
         cap = cv2.VideoCapture(video_file)
         # Verifica se il video è stato aperto correttamente
@@ -184,6 +189,59 @@ def select_video_nuoto():
             key = cv2.waitKey(25)
             if key == ord('q') or cv2.getWindowProperty('Video', cv2.WND_PROP_VISIBLE) < 1:
                 break
+
+        process.join()
+        risultati = result.get()
+        gomiti,piedi,schiena = risultati
+        show_popup("Giudizio Trazioni", "Gomiti: " + gomiti + "\n"
+                            "Piedi: " + piedi + "\n"
+                            "Schiena: " + schiena)
+        cap.release()
+        cv2.destroyAllWindows()
+
+
+def select_video_legpress():
+    start="./pesi/legpress/video"
+    # Apre una finestra di dialogo per selezionare un video
+    video_file = filedialog.askopenfilename(initialdir=start,filetypes=[("Video files", "*.mp4 *.avi *.mkv *.mov *.MOV")])
+    # Verifica se l'utente ha selezionato un video o ha annullato la finestra di dialogo
+    if video_file:
+        result = multiprocessing.Queue()
+        process = multiprocessing.Process(target=leg.esegui, args=(video_file,result,))
+        process.start()
+        # Apre il video
+        cap = cv2.VideoCapture(video_file)
+        # Verifica se il video è stato aperto correttamente
+        if not cap.isOpened():
+            print("Errore nell'apertura del video")
+            exit()
+        
+        # Calcola l'altezza in base all'aspetto originale del video
+        original_width = int(cap.get(3))
+        original_height = int(cap.get(4))
+        if original_width > original_height: #se il video è orizzontale
+            desired_width = original_width // 2
+            desired_height = int(desired_width * original_height / original_width)
+        else: #se il video è verticale
+            desired_height = original_height // 2
+            desired_width = int(desired_height * original_width / original_height)
+        cv2.namedWindow('Video', cv2.WINDOW_NORMAL)
+        cv2.resizeWindow('Video', desired_width, desired_height)
+        while True:
+            ret, frame = cap.read()
+            if not ret:
+                break
+            cv2.imshow('Video', frame)
+            # Gestione dell'evento di chiusura della finestra
+            key = cv2.waitKey(25)
+            if key == ord('q') or cv2.getWindowProperty('Video', cv2.WND_PROP_VISIBLE) < 1:
+                break
+        
+        process.join()
+        risultati = result.get()
+        piedi,scende = risultati
+        show_popup("Giudizio LegPress", "Piedi: " + piedi + "\n"
+                            "Scende: " + scende)
         cap.release()
         cv2.destroyAllWindows()
 
@@ -231,9 +289,12 @@ btn2.place(relx=0.7, rely=0.7, anchor="center")
 btn3 = customtkinter.CTkButton(master = root, text = "Corsa", height=40, corner_radius=8, fg_color="transparent", 
                 hover_color="white", border_color="#93f233", text_color="#93f233", border_width=2, command=select_video_corsa)
 btn3.place(relx=0.3, rely=0.8, anchor="center")
-btn4 = customtkinter.CTkButton(master = root, text = "Nuoto", height=40, corner_radius=8, fg_color="transparent", 
-                hover_color="white", border_color="#93f233", text_color="#93f233", border_width=2, command=select_video_nuoto)
+btn4 = customtkinter.CTkButton(master = root, text = "Trazioni", height=40, corner_radius=8, fg_color="transparent", 
+                hover_color="white", border_color="#93f233", text_color="#93f233", border_width=2, command=select_video_trazioni)
 btn4.place(relx=0.7, rely=0.8, anchor="center")
 
+btn5 = customtkinter.CTkButton(master = root, text = "LegPress", height=40, corner_radius=8, fg_color="transparent", 
+                hover_color="white", border_color="#93f233", text_color="#93f233", border_width=2, command=select_video_legpress)
+btn5.place(relx=0.5, rely=0.6, anchor="center")
 
 root.mainloop()
